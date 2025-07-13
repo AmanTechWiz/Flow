@@ -1,0 +1,17 @@
+# This is a config for E2B sandbox template.
+# You can use template ID (aivy81z8s9comu0cfzpy) or template name (flow-nextjs-v1) to create a sandbox:
+
+# Python SDK
+# from e2b import Sandbox, AsyncSandbox
+# sandbox = Sandbox("flow-nextjs-v1") # Sync sandbox
+# sandbox = await AsyncSandbox.create("flow-nextjs-v1") # Async sandbox
+
+# JS SDK
+# import { Sandbox } from 'e2b'
+# const sandbox = await Sandbox.create('flow-nextjs-v1')
+
+team_id = "711ad9c5-0990-442c-bfe2-13ec1e670b97"
+start_cmd = "/compile_page.sh"
+dockerfile = "e2b.Dockerfile"
+template_name = "flow-nextjs-v1"
+template_id = "aivy81z8s9comu0cfzpy"

@@ -1,11 +1,11 @@
 import { inngest } from "./client";
-import { openai, createAgent , createTool, createNetwork, type Tool, Agent} from "@inngest/agent-kit";
+import { gemini,createAgent , createTool, createNetwork, type Tool, Agent} from "@inngest/agent-kit";
 import { Sandbox } from 'e2b'
 import { getSandbox } from "./utils";
 import { z } from "zod";
 import { PROMPT } from "@/prompt";
 import { lastAssistantTextMessageContent } from "./utils";
-import { prisma } from "@/lib/db";
+import { prisma } from "@/inngest/lib/db";
 
 interface AgentState{
   summary : string;
@@ -28,7 +28,9 @@ export const codeAgentFunction = inngest.createFunction(
       name: "code-agent",
       description: "Expert coding agent",
       system: PROMPT,
-      model: openai({ model: "gpt-4o-mini" }),
+      model: gemini({ 
+        model: "gemini-2.5-flash",
+       }),
       tools: [
         createTool({
               name: "terminal",
@@ -161,6 +163,7 @@ export const codeAgentFunction = inngest.createFunction(
       if(isError){
         return await prisma.message.create({
           data:{
+          projectId: event.data.projectId,
           content: "Something went wrong!",
           role:"ASSISTANT",
           type:"ERROR",
@@ -170,6 +173,7 @@ export const codeAgentFunction = inngest.createFunction(
 
       return await prisma.message.create({
         data:{
+        projectId: event.data.projectId,  
         content: result.state.data.summary,
         role:"ASSISTANT",
         type:"RESULT",

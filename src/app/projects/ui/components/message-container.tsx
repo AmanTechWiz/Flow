@@ -25,13 +25,6 @@ export const MessagesContainer = ({projectId , activeFragment , setActiveFragmen
         )); 
 
     const bottomRef = useRef<HTMLDivElement>(null);
-    
-    // useEffect(()=>{
-    //     const lastAssistantMessage = messages.findLast((message)=> message.role === "ASSISTANT");
-    //     if(lastAssistantMessage ){
-    //         setActiveFragment(lastAssistantMessage.fragment);
-    //     }
-    // },[messages, setActiveFragment]);
 
     useEffect(()=>{
             bottomRef.current?.scrollIntoView({behavior : "smooth"});
@@ -41,12 +34,11 @@ export const MessagesContainer = ({projectId , activeFragment , setActiveFragmen
     const isLastMessageUser = lastMessage?.role === "USER";
 
     return (
-   <div>     
-        <div className="flex flex-col h-full">
-            <div className="flex-1 flex flex-col overflow-hidden">
-                <div className="flex-1 overflow-y-auto p-3">
-                    {messages.map((message) => (
-                        <MessageCard
+        <div className="flex flex-col h-full relative">
+            {/* Messages area with scroll */}
+            <div className="flex-1 overflow-y-auto p-3 pb-0">
+                {messages.map((message) => (
+                    <MessageCard
                         key={message.id}
                         message={message.content}
                         content={message.content}
@@ -56,17 +48,18 @@ export const MessagesContainer = ({projectId , activeFragment , setActiveFragmen
                         isActiveFragment={activeFragment?.id === message.fragment?.id}
                         onFragmentClick={() => setActiveFragment(message.fragment)}
                         type={message.type}
-                        />
-                    ))}
-                    {isLastMessageUser && <MessageLoading/>}
-                    <div ref={bottomRef}/>
-                </div>
-            <div className="relative p-3 pt-1">
-                <div className = "absolute -top-6 left-0 right-0 h-6 bg-gradient-to-b from-transparent-to-background/70 pointer-events-none" />     
-                {/* <MessageForm projectId={projectId} /> */}
+                    />
+                ))}
+                {isLastMessageUser && <MessageLoading/>}
+                <div ref={bottomRef}/>
+                {/* Add some padding at the bottom so last message doesn't get hidden behind gradient */}
+                <div className="h-4" />
             </div>
+            
+            {/* Gradient overlay - positioned above the form */}
+            <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white via-white/50 to-transparent pointer-events-none z-10" />
+        
+           
         </div>
-    </div>
- </div>
-);    
+    );    
 }

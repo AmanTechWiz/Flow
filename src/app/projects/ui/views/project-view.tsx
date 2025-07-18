@@ -5,7 +5,7 @@ import { MessageForm } from "@/app/projects/ui/components/message.form";
 import { Fragment } from "@prisma/client";
 import { useState } from "react";
 import { ProjectHeader } from "@/app/projects/ui/components/project-header";
-
+import { FragmentWeb } from "../components/fragment-web";
 import {
     ResizableHandle,
     ResizablePanel,
@@ -59,9 +59,9 @@ export const ProjectView = ({projectId}:Props)=>{
                 <ResizableHandle />
                 
                 <ResizablePanel defaultSize={65} minSize={50}>
-                    <div className="h-full p-4">
-                        TODO : preview
-                    </div>
+
+                {activeFragment && <FragmentWeb data={activeFragment}/>}
+
                 </ResizablePanel>
             </ResizablePanelGroup>
         </div>    

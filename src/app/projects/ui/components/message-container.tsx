@@ -57,8 +57,10 @@ export const MessagesContainer = ({projectId , activeFragment , setActiveFragmen
             </div>
             
             {/* Gradient overlay - positioned above the form */}
-            <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white via-white/50 to-transparent pointer-events-none z-10" />
-        
+           <div className="absolute bottom-0 left-0 right-0 h-8 pointer-events-none z-10 
+                            bg-gradient-to-t from-white via-white/50 to-transparent 
+                            dark:from-gray-950 dark:via-gray-950/50 dark:to-transparent" />
+            
            
         </div>
     );    

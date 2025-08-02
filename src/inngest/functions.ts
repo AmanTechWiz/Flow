@@ -1,9 +1,9 @@
 import { inngest } from "./client";
-import { gemini,createAgent , createTool, createNetwork, type Tool, Agent} from "@inngest/agent-kit";
+import { openai,gemini,createAgent , createState, createTool, createNetwork, type Tool, Agent, Message} from "@inngest/agent-kit";
 import { Sandbox } from 'e2b'
 import { getSandbox } from "./utils";
 import { z } from "zod";
-import { PROMPT } from "@/prompt";
+import { PROMPT, RESPONSE_PROMPT, FRAGMENT_TITLE_PROMPT } from "@/prompt";
 import { lastAssistantTextMessageContent } from "./utils";
 import { prisma } from "@/inngest/lib/db";
 
@@ -21,8 +21,40 @@ export const codeAgentFunction = inngest.createFunction(
      const sandboxId= await step.run('get-sandbox-id',async()=>{
       const sandbox = await Sandbox.create("flow-nextjs-v1")
       return sandbox.sandboxId;
-     })
+     });
 
+     const previousMessages = await step.run("get-previous-messages", async () => {
+      const editedMessage : Message[] = [];
+
+      const messages = await prisma.message.findMany({
+        where: {
+          projectId: event.data.projectId,
+        },
+        orderBy:{
+          createdAt: "desc",
+        }
+      });
+
+      for(const message of messages){
+        editedMessage.push({
+          type: "text",
+          role: message.role === "ASSISTANT" ? "assistant" : "user",
+          content: message.content
+        })
+      }
+
+      return editedMessage;
+     });
+
+     const state = createState<AgentState>(
+      {
+       summary: "",
+       files: {},
+     },
+     {
+      messages: previousMessages
+     }
+    )
 
     const codeAgent = createAgent<AgentState>({
       name: "code-agent",
@@ -106,7 +138,7 @@ export const codeAgentFunction = inngest.createFunction(
             return await step?.run("readFiles", async () => {
               try {
                 const sandbox = await getSandbox(sandboxId);
-                const readFiles = [];
+                const readFiles: { path: string; content: string }[] = [];
                 for (const file of files) {
                   const content = await sandbox.files.read(file);
                   readFiles.push({ path: file, content });
@@ -120,23 +152,28 @@ export const codeAgentFunction = inngest.createFunction(
         })
       ],
 
-      lifecycle:{
-        onResponse: async ({result,network})=>{
-          const lastAssistantTextMessage = lastAssistantTextMessageContent(result);
+      lifecycle: {
+  onResponse: async ({ result, network }) => {
+    const lastAssistantTextMessage = lastAssistantTextMessageContent(result);
 
-          if(lastAssistantTextMessage && network){
-            if(lastAssistantTextMessage.includes("<task_summary>")){
-              network.state.data.summary = lastAssistantTextMessage;
-            }
-          }
-          return result;
-        }
+    if (lastAssistantTextMessage && network) {
+      if (lastAssistantTextMessage.includes("<task_summary>")) {
+ 
+        const summaryMatch = lastAssistantTextMessage.match(/<task_summary>(.*?)<\/task_summary>/s);
+        const cleanSummary = summaryMatch ? summaryMatch[1].trim() : lastAssistantTextMessage;
+        
+        network.state.data.summary = cleanSummary;
       }
+    }
+    return result;
+  }
+}
     });
 
     const network = createNetwork<AgentState>({
       name: "coding-agent-network",
       agents:[codeAgent],
+      defaultState: state,
       maxIter: 15,
       router: async ({network})=>{
         const summary = network.state.data.summary;
@@ -147,7 +184,53 @@ export const codeAgentFunction = inngest.createFunction(
       }
     })
   
-    const result = await network.run(event.data.value);
+    const result = await network.run(event.data.value,{state});
+
+    const fragmentTitleGenerator = createAgent({
+      name: "fragement-title-generator",
+      description: "fragement title generator",
+      system: FRAGMENT_TITLE_PROMPT,
+      model: gemini({ 
+        model: "gemini-2.5-flash",
+       }),
+    });
+
+
+    const ResponseGenerator = createAgent({
+      name: "response-generator",
+      description: "response generator",
+      system: RESPONSE_PROMPT,
+      model: gemini({ 
+        model: "gemini-2.5-flash",
+       }),
+    });
+
+    const {output : fragmentTitleOp} = await fragmentTitleGenerator.run(result.state.data.summary);
+    const {output: responseOp } = await ResponseGenerator.run(result.state.data.summary);
+
+    const generateFragmentTitle = () => {
+      if(fragmentTitleOp[0].type!= "text"){
+        return "Fragment";
+      }
+
+      if(Array.isArray(fragmentTitleOp[0].content)){
+        return fragmentTitleOp[0].content.map((txt)=>txt).join("")
+      }else{
+        return fragmentTitleOp[0].content;
+      }
+    }
+
+    const generateResponse = () => {
+      if(responseOp[0].type!= "text"){
+        return "Here you go";
+      }
+
+      if(Array.isArray(responseOp[0].content)){
+        return responseOp[0].content.map((txt)=>txt).join("")
+      }else{
+        return responseOp[0].content;
+      }
+    }
 
     const isError = !result.state.data.summary ||
     Object.keys(result.state.data.files || {}).length === 0;
@@ -174,7 +257,7 @@ export const codeAgentFunction = inngest.createFunction(
       return await prisma.message.create({
         data:{
         projectId: event.data.projectId,  
-        content: result.state.data.summary,
+        content: generateResponse(),
         role:"ASSISTANT",
         type:"RESULT",
         fragment: {
@@ -190,7 +273,7 @@ export const codeAgentFunction = inngest.createFunction(
 
     return {
       url : sandboxurl,
-      title: "Fragment",
+      title: generateFragmentTitle(),
       files: result.state.data.files,
       summary: result.state.data.summary,
       };

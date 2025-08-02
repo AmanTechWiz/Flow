@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Bluetooth, ExternalLinkIcon, RefreshCcwIcon } from "lucide-react";
+import {ExternalLinkIcon, RefreshCcwIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Fragment } from "@prisma/client";
 import { Hint } from "./hint";

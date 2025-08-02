@@ -3,10 +3,10 @@ import {useState, useEffect} from "react";
 
 const ShimmerMessages = () =>{
     const messages = [
-        "Thinking...",
+        "Understanding your request...",
+        "Flow is thinking...",
         "Loading...",
         "Generating",
-        "Understanding your request...",
         "Building...",
         "Creating components...",
         "Figuring out the layout...",
@@ -19,7 +19,7 @@ const ShimmerMessages = () =>{
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentMessageIndex((prev) => (prev + 1) % messages.length);
-        }, 10000);
+        }, 15000);
 
         return () => clearInterval(interval);
     }, [messages.length]);
@@ -41,11 +41,11 @@ const ShimmerMessages = () =>{
                         alt="flow"
                         width={18}
                         height={18}
-                        className="shrink-0"
+                        className="shrink-0 opacity-100 contrast-125 dark:invert"
                     />
                     <span className="text-sm font-medium">Flow</span>
                 </div>
-                <div className="PL-8.5 flex flex-col gap-y-4">
+                <div className="pl-8 flex flex-col gap-y-4">
                     <ShimmerMessages/>
                 </div>
             </div>

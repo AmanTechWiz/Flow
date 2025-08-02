@@ -48,7 +48,13 @@ export const ProjectHeader = ({projectId} : Props) => {
                 <Button variant = "ghost" 
                 size = "sm"
                 className="focus-visible:ring-0 hover:bg-transparent hover:opacity-75 transition-opacity pl-2!">
-                <Image src="/flow.svg" alt="Logo" width={18} height={18} />
+              <Image
+                src="/flow.svg"
+                alt="Logo"
+                width={18}
+                height={18}
+                className="dark:invert"
+                />
                 <span>
                     {project.name}
                 </span>

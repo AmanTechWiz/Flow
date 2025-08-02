@@ -5,6 +5,7 @@ import {format} from "date-fns";
 import Image from "next/image";
 import {ChevronRightIcon, Code2Icon } from "lucide-react";
 
+
 interface UserMessageProps {
     content: string
 }
@@ -46,7 +47,7 @@ const FragmentCard = ({fragment, isActiveFragment, onFragmentClick}:FragmentCard
           <Code2Icon className="size-4 mt-0.5"/>
             <div className="flex flex-col flex-1">
                 <span className = "text-sm font-bold line-clamp-1">
-                    {fragment.title}
+                    Project
                 </span>
                 <span className="text-sb"> Preview </span>
             </div>
@@ -67,7 +68,7 @@ const AssistantMessage=({content, fragment, createdAt, isActiveFragment, onFragm
                     alt="flow"
                     width={20}
                     height={20}
-                    className="shrink-0"
+                    className="shrink-0 dark:invert"
                 />
                 <span className="text-start text- font-bold">Flow</span>
                  <span className="text-xs text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100">

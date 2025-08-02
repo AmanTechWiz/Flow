@@ -1,7 +1,7 @@
 "use client"
 
 import { MessagesContainer } from "@/app/projects/ui/components/message-container";
-import { MessageForm } from "@/app/projects/ui/components/message.form";
+import { MessageForm } from "@/app/projects/ui/components/message-form";
 import { Fragment } from "@prisma/client";
 import { useState } from "react";
 import { ProjectHeader } from "@/app/projects/ui/components/project-header";
@@ -28,6 +28,8 @@ import { Code2, Crown } from "lucide-react";
 import { Suspense } from "react";
 import { Laptop } from "lucide-react";
 import Link from "next/link";
+import { UserControl } from "@/components/ui/user-control";
+import { ClerkProvider } from "@clerk/nextjs";
 
 
 interface Props{
@@ -41,11 +43,12 @@ export const ProjectView = ({projectId}:Props)=>{
     const [activeFragment, setActiveFragment] = useState<Fragment | null>(null);
 
     return ( 
-        <div className="h-screen">
+        <ClerkProvider>
+             <div className="h-screen">
             <ResizablePanelGroup direction="horizontal">
                 <ResizablePanel 
-                    defaultSize={35} 
-                    minSize={20}
+                    defaultSize={30} 
+                    minSize={30}
                     className="flex flex-col">
                     
                     {/* Header - Fixed at top */}
@@ -75,7 +78,7 @@ export const ProjectView = ({projectId}:Props)=>{
                     
                 </ResizablePanel>
                 
-                <ResizableHandle withHandle/>
+                <ResizableHandle/>
                 
                 <ResizablePanel defaultSize={65} minSize={50}>
 
@@ -100,6 +103,7 @@ export const ProjectView = ({projectId}:Props)=>{
                                             <Crown size={16}/> Upgrade
                                         </Link>
                                     </Button>
+                                     <UserControl/> 
                                 </div>
                                 </div>
 
@@ -112,12 +116,11 @@ export const ProjectView = ({projectId}:Props)=>{
                                     )}
                                 </TabsContent>
                                    
-                </Tabs>
-
-              
-
-                </ResizablePanel>
+                </Tabs>             
+               </ResizablePanel>
             </ResizablePanelGroup>
         </div>    
+        </ClerkProvider>
+       
     );
 };

@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import { MessageCard } from "./message-card";
-import { MessageForm } from "./message.form";
+import { MessageForm } from "./message-form";
 import { useEffect, useRef } from "react";
 import { Fragment } from "@prisma/client";
 import { set } from "date-fns";
@@ -15,16 +15,27 @@ interface Props{
 
 export const MessagesContainer = ({projectId , activeFragment , setActiveFragment}:Props) => {
     const trpc = useTRPC();
+    const bottomRef = useRef<HTMLDivElement>(null);
+    const lastAssistantMessageIdRef = useRef<string | null>(null);
 
     const {data : messages} = useSuspenseQuery(trpc.messages.getMany.
         queryOptions({projectId : projectId}
             ,{
-                // todo temp live message
                 refetchInterval:6000,
             }
         )); 
 
-    const bottomRef = useRef<HTMLDivElement>(null);
+        useEffect(()=>{
+            const lastAssistantMessage = messages.findLast(
+                (message) => message.role === "ASSISTANT"
+            );
+
+            if(lastAssistantMessage?.fragment && lastAssistantMessage.id !== lastAssistantMessageIdRef.current){
+                setActiveFragment(lastAssistantMessage.fragment);
+                lastAssistantMessageIdRef.current = lastAssistantMessage.id;
+            }
+        },[messages,setActiveFragment])
+
 
     useEffect(()=>{
             bottomRef.current?.scrollIntoView({behavior : "smooth"});

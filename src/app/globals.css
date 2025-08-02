@@ -3,6 +3,25 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@import "tailwindcss";
+
+@theme inline {
+  --animate-aurora: aurora 60s linear infinite;
+  @keyframes aurora {
+    from {
+      background-position:
+        50% 50%,
+        50% 50%;
+    }
+    to {
+      background-position:
+        350% 50%,
+        350% 50%;
+    }
+  }
+}
+
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -119,4 +138,12 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.neon-text {
+  text-shadow:
+    0 0 5px rgb(0, 0, 0),
+    0 0 10px rgb(255, 255, 255),
+    0 0 20px rgb(0, 0, 0),
+    0 0 40px rgb(0, 0, 0);
 }

@@ -1,8 +1,11 @@
 import { TreeItem } from "@/../src/types"
-
-export function cn(...classes: (string | undefined | false)[]) {
-  return classes.filter(Boolean).join(" ");
+import { ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+ 
+export function cn(...inputs: (ClassValue | string | undefined | false)[]) {
+  return twMerge(clsx(...inputs));
 }
+
 
 export function convertFilesToTreeItems(
   files: {[path:string] : string},

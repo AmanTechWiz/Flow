@@ -1,11 +1,12 @@
 import { inngest } from "./client";
-import { openai,gemini,createAgent , createState, createTool, createNetwork, type Tool, Agent, Message} from "@inngest/agent-kit";
+import { openai, gemini,createAgent , createState, createTool, createNetwork, type Tool, Agent, Message} from "@inngest/agent-kit";
 import { Sandbox } from 'e2b'
 import { getSandbox } from "./utils";
 import { z } from "zod";
 import { PROMPT, RESPONSE_PROMPT, FRAGMENT_TITLE_PROMPT } from "@/prompt";
 import { lastAssistantTextMessageContent } from "./utils";
 import { prisma } from "@/inngest/lib/db";
+import { SANDBOX_TIME } from "./types";
 
 interface AgentState{
   summary : string;
@@ -20,6 +21,7 @@ export const codeAgentFunction = inngest.createFunction(
 
      const sandboxId= await step.run('get-sandbox-id',async()=>{
       const sandbox = await Sandbox.create("flow-nextjs-v1")
+      await sandbox.setTimeout(SANDBOX_TIME)
       return sandbox.sandboxId;
      });
 
@@ -32,7 +34,8 @@ export const codeAgentFunction = inngest.createFunction(
         },
         orderBy:{
           createdAt: "desc",
-        }
+        },
+        take:5,
       });
 
       for(const message of messages){
@@ -43,7 +46,7 @@ export const codeAgentFunction = inngest.createFunction(
         })
       }
 
-      return editedMessage;
+      return editedMessage.reverse();
      });
 
      const state = createState<AgentState>(
@@ -60,8 +63,10 @@ export const codeAgentFunction = inngest.createFunction(
       name: "code-agent",
       description: "Expert coding agent",
       system: PROMPT,
-      model: gemini({ 
-        model: "gemini-2.5-flash",
+      model: openai({ 
+        baseUrl: "https://openrouter.ai/api/v1",
+        apiKey: "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",
+        model: "openrouter/horizon-beta",
        }),
       tools: [
         createTool({
@@ -263,7 +268,7 @@ export const codeAgentFunction = inngest.createFunction(
         fragment: {
         create:{
           sandboxUrl: sandboxurl,
-          title:"Fragment",
+          title: generateFragmentTitle(),
           files: result.state.data.files,
         },
       },

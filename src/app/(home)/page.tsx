@@ -3,7 +3,7 @@
 import { ProjectForm } from "@/modules/home/ui/components/project-form";
 import LightRays from "../projects/ui/components/LightRays";
 import { ProjectList } from "./ui/components/projects-list";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import BlurText from "../projects/ui/components/blurtext";
 import FadeContent from "../projects/ui/components/FadeContent";
@@ -22,6 +22,8 @@ const scrollToProjects = () => {
 };
 
 const Page = () => {
+  const [showTemplates, setShowTemplates] = useState(false);
+
   useEffect(() => {
     const fontLink = document.createElement("link");
     fontLink.rel = "stylesheet";
@@ -38,26 +40,80 @@ const Page = () => {
         scrollbar-width: none;
         -ms-overflow-style: none;
       }
+      
+      /* Force dark theme for landing page regardless of theme context */
+      [data-theme="light"] .landing-page-container,
+      [data-theme="dark"] .landing-page-container,
+      .landing-page-container {
+        background-color: #000000 !important;
+        color: #ffffff !important;
+        color-scheme: dark !important;
+      }
+      
+      /* Override any potential theme-based color changes */
+      .landing-page-container * {
+        color-scheme: dark !important;
+
+            /* Fix Clerk button visibility */
+        .cl-userButtonBox,
+        .cl-signInButton,
+        .cl-signUpButton,
+        .cl-userButton {
+          background-color: rgba(255, 255, 255, 0.1) !important;
+          border: 1px solid rgba(255, 255, 255, 0.2) !important;
+          color: #ffffff !important;
+        }
+        
+        .cl-userButtonBox:hover,
+        .cl-signInButton:hover,
+        .cl-signUpButton:hover {
+          background-color: rgba(255, 255, 255, 0.2) !important;
+        }
+        
+        /* Clerk text colors */
+        .cl-userButtonBox *,
+        .cl-signInButton *,
+        .cl-signUpButton * {
+          color: #ffffff !important;
+          
+      }
     `;
     document.head.appendChild(style);
+
+    // Force dark theme on html/body for this page
+    const originalHtmlClass = document.documentElement.className;
+    const originalBodyClass = document.body.className;
+    const originalColorScheme = document.documentElement.style.colorScheme;
+
+    document.documentElement.classList.add('dark');
+    document.documentElement.classList.remove('light');
+    document.body.classList.add('dark');
+    document.body.classList.remove('light');
+    document.documentElement.style.colorScheme = 'dark';
 
     return () => {
       document.head.removeChild(style);
       document.head.removeChild(fontLink);
+
+      // Restore original classes when leaving the page
+      document.documentElement.className = originalHtmlClass;
+      document.body.className = originalBodyClass;
+      document.documentElement.style.colorScheme = originalColorScheme;
     };
   }, []);
 
   return (
     <LandingLayout>
       <div
-        className="dark bg-black min-h-screen text-white"
+        className="landing-page-container dark bg-black min-h-screen text-white"
         style={{
-          backgroundColor: "#000000",
+          backgroundColor: "#000000 !important",
+          color: "#ffffff !important",
           colorScheme: "dark",
           minHeight: "100vh",
         }}
       >
-        <FadeContent blur={true} duration={1000} easing="ease-out" initialOpacity={0}>
+        <FadeContent blur={true} duration={1500} easing="ease-out" initialOpacity={0}>
           <div className="relative w-full bg-black min-h-screen">
             {/* Hero Section */}
             <div className="relative min-h-screen w-full overflow-hidden bg-black">
@@ -83,7 +139,10 @@ const Page = () => {
                   <div className="max-w-5xl w-full text-center">
                     <h1
                       className="text-2xl md:text-5xl font-bold text-center text-amber-100 mb-4"
-                      style={{ fontFamily: "'Playfair Display', serif" }}
+                      style={{
+                        fontFamily: "'Playfair Display', serif",
+                        color: "#fef3c7 !important"
+                      }}
                     >
                       <div className="mb-4 w-full flex justify-center">
                         <BlurText
@@ -99,33 +158,52 @@ const Page = () => {
 
                     <p
                       className="text-base md:text-xl text-center text-slate-400 mb-8"
-                      style={{ fontFamily: "'Playfair Display', serif" }}
+                      style={{
+                        fontFamily: "'Playfair Display', serif",
+                        color: "#94a3b8 !important"
+                      }}
                     >
                       Craft AI generated web app designs
                     </p>
 
                     <div className="max-w-3xl mx-auto w-full">
-                      <ProjectForm />
+                      <ProjectForm 
+                        showTemplates={showTemplates}
+                        setShowTemplates={setShowTemplates}
+                      />
                     </div>
                   </div>
                 </div>
 
-                <button
-                  onClick={scrollToProjects}
-                  className="group absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 p-2 hover:scale-110 transition-all duration-300 ease-out"
-                >
-                  <span className="text-sm text-white/80 group-hover:text-white font-medium transition-colors duration-300">
-                    View Projects
-                  </span>
-                  <div className="relative">
-                    <ChevronDown className="w-6 h-6 text-white/80 group-hover:text-white group-hover:translate-y-1 transition-all duration-300" />
-                    <ChevronDown className="w-6 h-6 text-white/40 absolute -top-2 group-hover:opacity-0 transition-all duration-300" />
-                  </div>
-                </button>
+                {/* View Projects Button - Only show when templates are hidden */}
+                {!showTemplates && (
+                  <button
+                    onClick={scrollToProjects}
+                    className="group absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 p-2 hover:scale-110 transition-all duration-300 ease-out animate-in fade-in slide-in-from-bottom-4"
+                    style={{ color: "#ffffff !important" }}
+                  >
+                    <span
+                      className="text-sm text-white/80 group-hover:text-white font-medium transition-colors duration-300"
+                      style={{ color: "rgba(255, 255, 255, 0.8) !important" }}
+                    >
+                      View Projects
+                    </span>
+                    <div className="relative">
+                      <ChevronDown
+                        className="w-6 h-6 text-white/80 group-hover:text-white group-hover:translate-y-1 transition-all duration-300"
+                        style={{ color: "rgba(255, 255, 255, 0.8) !important" }}
+                      />
+                      <ChevronDown
+                        className="w-6 h-6 text-white/40 absolute -top-2 group-hover:opacity-0 transition-all duration-300"
+                        style={{ color: "rgba(255, 255, 255, 0.4) !important" }}
+                      />
+                    </div>
+                  </button>
+                )}
               </div>
             </div>
 
-            <div id="projects-section" className="w-full bg-black px-4 py-16">
+            <div id="projects-section" className="w-full bg-black px-4 py-16" style={{ backgroundColor: "#000000 !important" }}>
               <div className="max-w-5xl mx-auto w-full">
                 <ProjectList />
               </div>

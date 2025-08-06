@@ -140,10 +140,52 @@
   }
 }
 
-.neon-text {
+ .neonText {
+  color: #fff;
   text-shadow:
-    0 0 5px rgb(0, 0, 0),
-    0 0 10px rgb(255, 255, 255),
-    0 0 20px rgb(0, 0, 0),
-    0 0 40px rgb(0, 0, 0);
+    0 0 5px #fff,
+    0 0 10px #fef3c6,
+    0 0 20px #fef3c6,
+    0 0 40px #fef3c6,
+    0 0 80px #fef3c6,
+    0 0 90px #fef3c6,
+    0 0 100px #fef3c6,
+    0 0 150px #fef3c6;
+  animation: neonPulse 2s ease-in-out infinite, neonBlink 4s infinite;
+}
+
+@keyframes neonPulse {
+  0%, 100% {
+    text-shadow:
+      0 0 5px #fff,
+      0 0 10px #fef3c6,
+      0 0 20px #fef3c6,
+      0 0 40px #fef3c6,
+      0 0 80px #fef3c6,
+      0 0 90px #fef3c6,
+      0 0 100px #fef3c6,
+      0 0 150px #fef3c6;
+    opacity: 1;
+  }
+  50% {
+    text-shadow:
+      0 0 2px #fff,
+      0 0 4px #fef3c6,
+      0 0 8px #fef3c6,
+      0 0 16px #fef3c6,
+      0 0 32px #fef3c6,
+      0 0 36px #fef3c6,
+      0 0 40px #fef3c6,
+      0 0 60px #fef3c6;
+    opacity: 0.7;
+  }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
 }

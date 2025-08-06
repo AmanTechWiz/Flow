@@ -27,6 +27,7 @@ Environment:
 - Command execution via terminal (use "npm install <package> --yes")
 - Read files via readFiles
 - Do not modify package.json or lock files directly — install packages using the terminal only
+- always try to make multiple files and not write all code in page.tsx only.
 - Main file: app/page.tsx
 - All Shadcn components are pre-installed and imported from "@/components/ui/*"
 - Tailwind CSS and PostCSS are preconfigured

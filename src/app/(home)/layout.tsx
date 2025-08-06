@@ -1,6 +1,5 @@
 'use client';
 import { usePathname } from "next/navigation";
-import { ClerkProvider } from "@clerk/nextjs";
 import { Navbar } from "./ui/components/navbar";
 
 interface Props {

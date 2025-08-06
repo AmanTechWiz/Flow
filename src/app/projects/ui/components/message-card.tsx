@@ -47,7 +47,7 @@ const FragmentCard = ({fragment, isActiveFragment, onFragmentClick}:FragmentCard
           <Code2Icon className="size-4 mt-0.5"/>
             <div className="flex flex-col flex-1">
                 <span className = "text-sm font-bold line-clamp-1">
-                    Project
+                    {fragment.title}
                 </span>
                 <span className="text-sb"> Preview </span>
             </div>

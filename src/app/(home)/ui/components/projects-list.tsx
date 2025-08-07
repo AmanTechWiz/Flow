@@ -9,7 +9,7 @@ import { useTRPC } from "@/trpc/client"
 import { Button } from "@/components/ui/button"
 import { Playfair_Display } from "next/font/google"
 import Aurora from "../../../projects/ui/components/aurora-background"
-import { use } from "react"
+
 
 // Font setup
 const playfairBold = Playfair_Display({

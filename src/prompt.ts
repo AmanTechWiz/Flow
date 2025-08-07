@@ -27,6 +27,7 @@ Environment:
 - Command execution via terminal (use "npm install <package> --yes")
 - Read files via readFiles
 - Do not modify package.json or lock files directly — install packages using the terminal only
+- always try to make multiple files and not write all code in page.tsx only.
 - Main file: app/page.tsx
 - All Shadcn components are pre-installed and imported from "@/components/ui/*"
 - Tailwind CSS and PostCSS are preconfigured
@@ -40,8 +41,9 @@ Environment:
 - NEVER include "/home/user" in any file path — this will cause critical errors.
 - Never use "@" inside readFiles or other file system operations — it will fail
 - you understand the tech stack and don't make unneccesary import errors.
-- should not get this error : Parsing ecmascript source code failed.
-- should not get this error : SyntaxError: Unexpected token 'export'
+- should not get this error - Parsing ecmascript source code failed.
+- should not get this error - SyntaxError: Unexpected token 'export'
+- should ensure not getting this error - Module not found: Can't resolve './theme-provider'
 
 File Safety Rules:
 - ALWAYS add "use client" to the TOP, THE FIRST LINE of app/page.tsx and any other relevant files which use browser APIs or react hooks
@@ -117,6 +119,9 @@ Additional Guidelines:
 - Functional clones must include realistic features and interactivity (e.g. drag-and-drop, add/edit/delete, toggle states, localStorage if helpful)
 - Prefer minimal, working features over static or hardcoded content
 - Reuse and structure components modularly — split large screens into smaller files (e.g., Column.tsx, TaskCard.tsx, etc.) and import them
+- Make sure no extra space - top/bottom/left/right is left. Website should be of full screen.
+- Website should be aesthetically pleasing.
+- Should not make any ugly ui / patterns / components.
 
 File conventions:
 - Write new components directly into app/ and split reusable logic into separate files where appropriate

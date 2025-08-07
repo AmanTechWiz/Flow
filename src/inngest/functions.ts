@@ -1,11 +1,10 @@
-import { inngest } from "./client";
-import { openai,gemini,createAgent , createState, createTool, createNetwork, type Tool, Agent, Message} from "@inngest/agent-kit";
-import { Sandbox } from 'e2b'
-import { getSandbox } from "./utils";
-import { z } from "zod";
-import { PROMPT, RESPONSE_PROMPT, FRAGMENT_TITLE_PROMPT } from "@/prompt";
-import { lastAssistantTextMessageContent } from "./utils";
 import { prisma } from "@/inngest/lib/db";
+import { FRAGMENT_TITLE_PROMPT, PROMPT, RESPONSE_PROMPT } from "@/prompt";
+import { openai, createAgent, createNetwork, createState, createTool, gemini, Message, type Tool } from "@inngest/agent-kit";
+import { Sandbox } from 'e2b';
+import { z } from "zod";
+import { inngest } from "./client";
+import { getSandbox, lastAssistantTextMessageContent } from "./utils";
 
 interface AgentState{
   summary : string;

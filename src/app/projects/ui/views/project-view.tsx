@@ -7,6 +7,7 @@ import { useState } from "react";
 import { ProjectHeader } from "@/app/projects/ui/components/project-header";
 import { FragmentWeb } from "../components/fragment-web";
 import { FileExplorer } from "@/components/ui/file-explorer";
+import { ErrorBoundary } from "react-error-boundary";
 
 import {
     ResizableHandle,
@@ -27,7 +28,7 @@ import { Code2, Crown } from "lucide-react";
 
 import { Suspense } from "react";
 import { Laptop } from "lucide-react";
-import Link from "next/link";
+
 import { UserControl } from "@/components/ui/user-control";
 import { ClerkProvider } from "@clerk/nextjs";
 
@@ -52,15 +53,19 @@ export const ProjectView = ({projectId}:Props)=>{
                     className="flex flex-col">
                     
                     {/* Header - Fixed at top */}
-                    <Suspense fallback={<div className="shrink-0 p-2 border-b">Loading project...</div>}>
+                     <ErrorBoundary fallback = {<p> error </p>}>
+                          <Suspense fallback={<div className="shrink-0 p-2 border-b">Loading project...</div>}>
                         <div className="shrink-0">
                             <ProjectHeader projectId={projectId}/>
                         </div>
                     </Suspense>    
+                     </ErrorBoundary>
+                  
                     
                     {/* Messages - Scrollable middle section */}
                     <div className="flex-1 min-h-0 flex flex-col">
-                        <Suspense fallback={<div className="flex-1 p-3">Loading chat...</div>}>
+                        <ErrorBoundary fallback = {<p> error </p>}>
+                              <Suspense fallback={<div className="flex-1 p-3">Loading chat...</div>}>
                             <div className="flex-1 overflow-y-auto">
                                 <MessagesContainer 
                                     projectId={projectId}
@@ -69,8 +74,8 @@ export const ProjectView = ({projectId}:Props)=>{
                                 />
                             </div>
                         </Suspense>
+                        </ErrorBoundary>
                         
-                  
                         <div className="shrink-0 p-3 border-t bg-background">
                             <MessageForm projectId={projectId} />
                         </div>
@@ -99,9 +104,9 @@ export const ProjectView = ({projectId}:Props)=>{
                                 </TabsList>
                                <div className="ml-auto flex items-center gap-x-2">
                                     <Button asChild size="sm" variant="default">
-                                        <Link href="/pricing"> 
+                                        {/* <Link href="/pricing"> 
                                             <Crown size={16}/> Upgrade
-                                        </Link>
+                                        </Link> */}
                                     </Button>
                                      <UserControl/> 
                                 </div>

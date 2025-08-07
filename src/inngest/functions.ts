@@ -1,6 +1,6 @@
 import { prisma } from "@/inngest/lib/db";
 import { FRAGMENT_TITLE_PROMPT, PROMPT, RESPONSE_PROMPT } from "@/prompt";
-import { openai, createAgent, createNetwork, createState, createTool, gemini, Message, type Tool } from "@inngest/agent-kit";
+import { openai,createAgent, createNetwork, createState, createTool, gemini, Message, type Tool } from "@inngest/agent-kit";
 import { Sandbox } from 'e2b';
 import { z } from "zod";
 import { inngest } from "./client";
@@ -59,8 +59,10 @@ export const codeAgentFunction = inngest.createFunction(
       name: "code-agent",
       description: "Expert coding agent",
       system: PROMPT,
-      model: gemini({ 
-        model: "gemini-2.5-flash",
+      model: openai({ 
+         baseUrl: "https://openrouter.ai/api/v1",
+        apiKey: process.env.OPENROUTER_API_KEY,
+        model:"openrouter/horizon-beta",
        }),
       tools: [
         createTool({

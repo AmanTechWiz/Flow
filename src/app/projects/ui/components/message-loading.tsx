@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const ShimmerMessages = () => {
     const messages = [
@@ -16,33 +16,34 @@ const ShimmerMessages = () => {
 
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
     const [progress, setProgress] = useState(0);
+    const startTimeRef = useRef<number | null>(null);
 
-    // Existing message cycling effect
+    // Rotate messages every 15 seconds
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentMessageIndex((prev) => (prev + 1) % messages.length);
         }, 15000);
-
         return () => clearInterval(interval);
     }, [messages.length]);
 
-    // New progress bar effect - increases over 4 minutes
-   useEffect(() => {
-    const totalDuration = 210000; // 4 minutes in ms
-    const startTime = Date.now();
+    // Accurate 4-min progress bar synced with system time
+    useEffect(() => {
+        const totalDuration = 4 * 60 * 1000; // 4 minutes in ms
+        startTimeRef.current = Date.now();
 
-    const updateProgress = () => {
-        const elapsed = Date.now() - startTime;
-        const newProgress = Math.min((elapsed / totalDuration) * 100, 100);
-        setProgress(newProgress);
+        const interval = setInterval(() => {
+            if (!startTimeRef.current) return;
+            const elapsed = Date.now() - startTimeRef.current;
+            const newProgress = Math.min((elapsed / totalDuration) * 100, 100);
+            setProgress(newProgress);
 
-        if (newProgress < 100) {
-            requestAnimationFrame(updateProgress);
-        }
-    };
+            if (newProgress >= 100) {
+                clearInterval(interval);
+            }
+        }, 1000); // Every 1 sec (or 500ms for smoother updates)
 
-    requestAnimationFrame(updateProgress);
-}, []);
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <div className="space-y-3">
@@ -52,18 +53,18 @@ const ShimmerMessages = () => {
                 </span>
             </div>
 
-            {/* Beautiful Progress Bar */}
+            {/* Apple-like Progress Bar */}
             <div className="w-full">
                 <div className="flex justify-between text-xs text-muted-foreground mb-1">
                     <span>{Math.round(progress)}%</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 overflow-hidden">
+                <div className="w-full bg-[#e5e5ea] dark:bg-[#3a3a3c] rounded-full h-2.5 overflow-hidden">
                     <div
-                        className="bg-gradient-to-r from-[#f9a8d4] to-[#d8b4fe] h-2.5 rounded-full transition-[width] duration-[300ms] ease-linear relative overflow-hidden"
+                        className="bg-gradient-to-r from-[#fef3c6] to-[#d8b4fe] h-2.5 rounded-full transition-all ease-in-out duration-500 relative overflow-hidden"
                         style={{ width: `${progress}%` }}
                     >
-                        {/* Shimmer effect on the progress bar */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+                        {/* Subtle shimmer */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer pointer-events-none" />
                     </div>
                 </div>
             </div>

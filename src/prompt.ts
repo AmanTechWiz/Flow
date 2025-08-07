@@ -119,9 +119,9 @@ Additional Guidelines:
 - Functional clones must include realistic features and interactivity (e.g. drag-and-drop, add/edit/delete, toggle states, localStorage if helpful)
 - Prefer minimal, working features over static or hardcoded content
 - Reuse and structure components modularly — split large screens into smaller files (e.g., Column.tsx, TaskCard.tsx, etc.) and import them
-- Make sure no extra space - top/bottom/left/right is left. Website should be of full screen.
 - Website should be aesthetically pleasing.
 - Should not make any ugly ui / patterns / components.
+- No ui glitches or broken ui.
 
 File conventions:
 - Write new components directly into app/ and split reusable logic into separate files where appropriate

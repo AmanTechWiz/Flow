@@ -27,24 +27,22 @@ const ShimmerMessages = () => {
     }, [messages.length]);
 
     // New progress bar effect - increases over 4 minutes
-    useEffect(() => {
-        const totalDuration = 240000; // 4 minutes in milliseconds
-        const updateInterval = 100; // Update every 100ms for smooth animation
-        const increment = 100 / (totalDuration / updateInterval); // Calculate increment per update
+   useEffect(() => {
+    const totalDuration = 210000; // 4 minutes in ms
+    const startTime = Date.now();
 
-        const progressInterval = setInterval(() => {
-            setProgress(prev => {
-                const next = prev + increment;
-                if (next >= 100) {
-                    clearInterval(progressInterval);
-                    return 100;
-                }
-                return next;
-            });
-        }, updateInterval);
+    const updateProgress = () => {
+        const elapsed = Date.now() - startTime;
+        const newProgress = Math.min((elapsed / totalDuration) * 100, 100);
+        setProgress(newProgress);
 
-        return () => clearInterval(progressInterval);
-    }, []);
+        if (newProgress < 100) {
+            requestAnimationFrame(updateProgress);
+        }
+    };
+
+    requestAnimationFrame(updateProgress);
+}, []);
 
     return (
         <div className="space-y-3">
@@ -61,7 +59,7 @@ const ShimmerMessages = () => {
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 overflow-hidden">
                     <div
-                        className="bg-gradient-to-r from-[#f9a8d4] to-[#d8b4fe] h-2.5 rounded-full transition-all duration-100 ease-linear relative overflow-hidden"
+                        className="bg-gradient-to-r from-[#f9a8d4] to-[#d8b4fe] h-2.5 rounded-full transition-[width] duration-[300ms] ease-linear relative overflow-hidden"
                         style={{ width: `${progress}%` }}
                     >
                         {/* Shimmer effect on the progress bar */}

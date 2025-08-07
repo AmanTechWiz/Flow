@@ -65,7 +65,7 @@ export const codeAgentFunction = inngest.createFunction(
       system: PROMPT,
       model: openai({ 
         baseUrl: "https://openrouter.ai/api/v1",
-        apiKey: "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",
+        apiKey: process.env.OPENROUTER_API_KEY,
         model: "openrouter/horizon-beta",
        }),
       tools: [

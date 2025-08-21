@@ -28,9 +28,9 @@
 - [🏗 Project Structure](#-project-structure)
 - [🔌 API Reference](#-api-reference)
 - [🌍 Environment Variables](#-environment-variables)
-- [🤖 AI Architecture](#-ai-architecture)
+- [🤖 AI Structure](#-ai-architecture)
 - [🤝 Contributing](#-contributing)
-- [📞 Support & Contact](#-support--contact)
+
 
 ---
 
@@ -380,26 +380,7 @@ NEXT_PUBLIC_APP_URL="http://localhost:3000"
 
 ---
 
-## 🤖 AI Architecture
-
-### Agent System Overview
-
-Flow uses a sophisticated AI agent system powered by Inngest Agent Kit:
-
-```mermaid
-graph TD
-    A[User Input] --> B[tRPC API]
-    B --> C[Inngest Event]
-    C --> D[Code Agent]
-    D --> E[E2B Sandbox]
-    E --> F[File Operations]
-    F --> G[Terminal Commands]
-    G --> H[Generated Code]
-    H --> I[Live Preview]
-    I --> J[Database Storage]
-```
-
-### Core AI Components
+## 🤖 AI Components
 
 #### 1. Code Agent
 ```typescript
@@ -476,64 +457,15 @@ We welcome contributions to Flow! Here's how you can help:
 
 ---
 
-## 📞 Support & Contact
-
-### 🆘 Getting Help
-
-- **Documentation**: Check this README and inline code comments
-- **Issues**: [GitHub Issues](https://github.com/your-username/flow/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-username/flow/discussions)
-
-### 🐛 Bug Reports
-
-Please include:
-- Operating system and version
-- Node.js version
-- Browser and version
-- Steps to reproduce
-- Expected vs actual behavior
-- Screenshots if applicable
-
-### 💡 Feature Requests
-
-We'd love to hear your ideas! Please:
-- Check existing feature requests
-- Explain the use case
-- Describe the proposed solution
-- Consider implementation complexity
-
-### 📧 Contact
-
-- **Developer**: Aman
-- **Email**: [your-email@example.com]
-- **Twitter**: [@your-twitter]
-- **LinkedIn**: [Your LinkedIn Profile]
-
----
-
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🙏 Acknowledgments
-
-- **Next.js Team** - For the amazing React framework
-- **Vercel** - For seamless deployment and hosting
-- **Shadcn** - For the beautiful UI components
-- **E2B** - For secure code execution sandboxes
-- **Clerk** - For robust authentication
-- **Inngest** - For workflow orchestration
-- **OpenAI** - For powerful language models
-
----
-
 <div align="center">
 
-**Built with ❤️ by [Aman](https://github.com/your-username)**
-
-*Create something in the flow.*
+**Built with ❤️ by Amandeep**
 
 </div>
 ```

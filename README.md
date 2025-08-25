@@ -16,6 +16,8 @@
 
 [![Demo](https://img.youtube.com/vi/kfgcxzgMtZM/0.jpg)](https://www.youtube.com/watch?v=kfgcxzgMtZM)
 
+<img width="1097" height="933" alt="sequence" src="https://github.com/user-attachments/assets/e70b1cf9-cfcb-4d27-8134-56bdbafc0343" />
+
 
 </div>
 
@@ -471,4 +473,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Built with ❤️ by Amandeep**
 
 </div>
-```

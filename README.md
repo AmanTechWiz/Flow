@@ -10,13 +10,13 @@ lol jbjvvjvj
 [![Prisma](https://img.shields.io/badge/Prisma-6.13.0-2D3748?style=flat-square&logo=prisma)](https://prisma.io/)
 [![E2B](https://img.shields.io/badge/E2B-Sandbox-orange?style=flat-square)](https://e2b.dev/)
 
-*Create something in the flow.*
-
 **Craft AI-generated web app designs with intelligent code generation and live preview**
 
-<a href="https://www.youtube.com/watch?v=kfgcxzgMtZM">
-  <img width="2752" height="1536" alt="Youtube" src="https://github.com/user-attachments/assets/0628d266-6dca-414d-acc9-96810bbd4985" />
-</a>
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=kfgcxzgMtZM">
+    <img src="https://github.com/user-attachments/assets/0628d266-6dca-414d-acc9-96810bbd4985" alt="Youtube" width="500" />
+  </a>
+</p>
 
 <img width="1097" height="933" alt="sequence" src="https://github.com/user-attachments/assets/e70b1cf9-cfcb-4d27-8134-56bdbafc0343" />
 

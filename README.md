@@ -14,7 +14,7 @@ lol jbjvvjvj
 
 **Craft AI-generated web app designs with intelligent code generation and live preview**
 
-[![Demo](https://img.youtube.com/vi/kfgcxzgMtZM/0.jpg)](https://www.youtube.com/watch?v=kfgcxzgMtZM)
+[![Demo](https://www.youtube.com/watch?v=kfgcxzgMtZM)](https://www.youtube.com/watch?v=kfgcxzgMtZM)
 
 <img width="1097" height="933" alt="sequence" src="https://github.com/user-attachments/assets/e70b1cf9-cfcb-4d27-8134-56bdbafc0343" />
 

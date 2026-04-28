@@ -18,7 +18,10 @@ lol jbjvvjvj
   </a>
 </p>
 
-<img width="1097" height="933" alt="sequence" src="https://github.com/user-attachments/assets/e70b1cf9-cfcb-4d27-8134-56bdbafc0343" />
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/0628d266-6dca-414d-acc9-96810bbd4985" alt="Youtube" width="500" />
+    <img width="1097" height="933" alt="sequence" src="https://github.com/user-attachments/assets/e70b1cf9-cfcb-4d27-8134-56bdbafc0343" width="800"/>
+</p>
 
 
 </div>
